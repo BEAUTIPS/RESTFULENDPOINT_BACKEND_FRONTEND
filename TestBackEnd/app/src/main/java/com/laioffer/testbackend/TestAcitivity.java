@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.laioffer.testbackend.Model.TestPostModel;
 import com.laioffer.testbackend.Model.TestResponse;
+import com.laioffer.testbackend.Model.User;
 import com.laioffer.testbackend.network.FlaskNetWorkTest;
 import com.laioffer.testbackend.network.RetrofitClient;
 
@@ -22,69 +23,96 @@ public class TestAcitivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //case where backend needs to return a Jsonobject (which will be  deserialized into model class)
-        FlaskNetWorkTest api = RetrofitClient.newInstance(this).create(FlaskNetWorkTest.class);
-        api.getConnectionTest().enqueue(new Callback<TestResponse>() {
-            @Override
-            public void onResponse(Call<TestResponse> call, Response<TestResponse> response) {
-                          if (response.isSuccessful()) {
-                                   Log.d("Successful", response.body().toString());
-                          } else {
-                                   Log.d("Failures", "Didn't receive message");
-                          }
-            }
+//        //case where backend needs to return a Jsonobject (which will be  deserialized into model class)
+//        FlaskNetWorkTest api = RetrofitClient.newInstance(this).create(FlaskNetWorkTest.class);
+//        api.getConnectionTest().enqueue(new Callback<TestResponse>() {
+//            @Override
+//            public void onResponse(Call<TestResponse> call, Response<TestResponse> response) {
+//                          if (response.isSuccessful()) {
+//                                   Log.d("Successful", response.body().toString());
+//                          } else {
+//                                   Log.d("Failures", "Didn't receive message");
+//                          }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<TestResponse> call, Throwable t) {
+//                Log.d("Sth is wrong",t.toString());
+//
+//            }
+//        });
+//
+//
+//
+//        //case where backend needs to return a String front backend
+//        FlaskNetWorkTest apiString = RetrofitClient.newInstance(this).create(FlaskNetWorkTest.class);
+//        apiString.getStringResponse().enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                if (response.isSuccessful()) {
+//                    Log.d("Successful", response.body().toString());
+//                } else {
+//                    Log.d("Failures", "Didn't receive message");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//                Log.d("Sth is wrong",t.toString());
+//
+//            }
+//        });
 
-            @Override
-            public void onFailure(Call<TestResponse> call, Throwable t) {
-                Log.d("Sth is wrong",t.toString());
-
-            }
-        });
-
-
-
-        //case where backend needs to return a String front backend
-        FlaskNetWorkTest apiString = RetrofitClient.newInstance(this).create(FlaskNetWorkTest.class);
-        apiString.getStringResponse().enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    Log.d("Successful", response.body().toString());
-                } else {
-                    Log.d("Failures", "Didn't receive message");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.d("Sth is wrong",t.toString());
-
-            }
-        });
-
+//
+//
+//        //Test POST METHOD _Test Success
+//        //create Retrofit client
+//        FlaskNetWorkTest apiPost = RetrofitClient.newInstance(this).create(FlaskNetWorkTest.class);
+//        //create testPost class
+//        TestPostModel testPost = new TestPostModel("Something", "Sth else");
+//        //Get our response
+//        Call<String> callResult = apiPost.postTest(testPost);
+//
+//        callResult.enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                if (response.isSuccessful()) {
+//                    Log.d("Successful", response.body().toString());
+//                } else {
+//                    Log.d("Failures", "Didn't receive message");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//                Log.d("Sth is wrong",t.toString());
+//
+//            }
+//        });
 
 
         //Test POST METHOD _Test Success
         //create Retrofit client
-        FlaskNetWorkTest apiPost = RetrofitClient.newInstance(this).create(FlaskNetWorkTest.class);
+        FlaskNetWorkTest apiUserTest = RetrofitClient.newInstance(this).create(FlaskNetWorkTest.class);
         //create testPost class
-        TestPostModel testPost = new TestPostModel("Something", "Sth else");
+        User user = new User(25, "XL", "JOE");
+
         //Get our response
-        Call<String> callResult = apiPost.postTest(testPost);
+        Call<String> callResult = apiUserTest.postUserInfo(user);
 
         callResult.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Successful", response.body().toString());
+                    Log.i("Successful", response.body().toString());
                 } else {
-                    Log.d("Failures", "Didn't receive message");
+                    Log.i("Failure status code:", String.valueOf(response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.d("Sth is wrong",t.toString());
+                Log.i("Sth is wrong",t.toString());
 
             }
         });
